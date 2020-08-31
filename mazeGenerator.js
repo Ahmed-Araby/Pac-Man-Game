@@ -1,32 +1,5 @@
 "use strict";
 
-var can = document.getElementById('can');
-var colLabel = document.getElementById("colLabel");
-var rowLabel = document.getElementById("rowLabel");
-var ctx = can.getContext('2d');
-
-// setting the canvas width and height 
-can.width = 600;
-can.height = 600;
-
-var colScale = 20;
-var rowScale = 20;
-
-ctx.scale(colScale, rowScale);
-
-var actWidth = can.width / colScale;
-var actHeight = can.height / rowScale;
-
-
-
-function drawRectangle(upperLeftCol, upperLeftRow,
-    width, height, color)
-{ 
-    ctx.fillStyle = color
-    ctx.fillRect(upperLeftCol, upperLeftRow, width, height);
-    return ;
-}
-
 class vector
 {
     constructor(x, y)
@@ -45,7 +18,7 @@ class mazeGenerator
     */
 
     constructor(canvasWidth, canvasHeight
-        , maxCoridersCount = 1, coriderPresentage = 0.2)
+        , maxCoridersCount = 1, coriderPresentage = 0.2, wallImagePath = WALLIMAGEPATH)
     {
         /*
         boolean array that represent the maze
@@ -58,6 +31,8 @@ class mazeGenerator
         this.canvasHeight = canvasHeight;
         this.maxCoridersCount = maxCoridersCount;
         this.coriderPresentage = coriderPresentage;
+        this.wallImage = new Image(MAZECELLWIDTH, MAZECELLHEIGHT);
+        this.wallImage.src = wallImagePath;
 
         /*
         initialize the maze as full opened 
@@ -75,6 +50,24 @@ class mazeGenerator
             for(var row=0; row<canvasHeight; row++)
                 this.maze[col].push(1);
         }
+        return ;
+    }
+
+    putImageIntoCanvas(col, row, image)
+    {
+        /*
+        take into account the lag for loading the image 
+        into the browser.
+        */
+
+        if(!image.complete){
+            setTimeout(() => {
+                this.putImageIntoCanvas(col, row, image);
+            }, 50);
+            return ;
+        }
+
+        ctx.drawImage(image, col, row, 1, 1);
         return ;
     }
 
@@ -198,11 +191,15 @@ class mazeGenerator
     {
         for(var col = 0; col<this.canvasWidth; col++){
             for(var row= 0; row <this.canvasHeight; row++){
-                if(this.maze[col][row]==1){ // this was the bug !!!
-                    drawRectangle(col ,row, 1, 1, 'white');
+                if(this.maze[col][row]==1){ // this was the bug !!! , wrong order of col and row into the brackets
+                    drawRectangle(col ,row, 1, 1, 'black');
                 }
                 else{
-                    drawRectangle(col, row, 1, 1, 'black');
+                    // draw wall
+                    this.putImageIntoCanvas(col, row, this.wallImage);
+
+                    // draw rectangle
+                    //drawRectangle(col, row, 1, 1, 'red');
                 }
             }
         }
@@ -213,6 +210,21 @@ class mazeGenerator
     {
         // canvas manner 
         return this.maze[col][row];
+    }
+
+    pacManPosition()
+    {
+        for(var col = 0; col<this.canvasWidth; col++)
+        {
+            for(var row=0; row<this.canvasHeight; row++)
+            {
+                if(this.maze[col][row] == 1)
+                {
+                    return Array(col + 0.5, row + 0.5);
+                }
+            }
+        }
+        return Array(-1, -1);
     }
 
     applySpecialChangeToTheMaze()
@@ -245,7 +257,7 @@ class mazeGenerator
         return tmpWhiteCount;
     }
 
-    testMazeConnextivity(mouseCol, mouseRow)
+    testMazeConnectivity(mouseCol, mouseRow)
     {
         if(this.getPixel(mouseCol, mouseRow) == 0){
             return "error: you clicked a wall "
@@ -279,51 +291,3 @@ class mazeGenerator
         return ;
     }
 }
-
-
-var mazeObj = new mazeGenerator(actWidth, actHeight);
-
-
-function canvasMouseClick(event)
-{
-    var col = parseInt(event.clientX / colScale);
-    var row = parseInt(event.clientY / rowScale);
-    
-    colLabel.innerHTML = col;
-    rowLabel.innerHTML = row;
-
-    console.log(col, row,
-         mazeObj.maze[col][row]);
-    return ;
-}
-
-function verifyMaze()
-{
-    var col = parseInt(colLabel.innerHTML);
-    var row = parseInt(rowLabel.innerHTML);
-    var message = "";
-
-    if(Boolean(col) == false || Boolean(row) == false){
-        message = "pick a white point";
-    }
-    else 
-        message = mazeObj.testMazeConnextivity(col, row);
-    var divElement = document.getElementById('res');
-    divElement.innerHTML = message;
-    return ;
-}
-
-
-function main()
-{
-    mazeObj.recursiveDivision(new vector(0, 0),
-                              new vector(actWidth, actHeight),
-                            'vertical');
-    mazeObj.renderMaze();
-
-    can.addEventListener('click', canvasMouseClick);
-    return ;
-}
-
-// C++ for ever
-main();
