@@ -1,26 +1,39 @@
 "use strict";
 
-
-var can = document.getElementById('can');
-var ctx = can.getContext('2d');
+// html elements
+var canvas = document.getElementById('can');
+var ctx = canvas.getContext('2d');
 var colLabel = document.getElementById("colLabel");
 var rowLabel = document.getElementById("rowLabel");
 
 // setting the canvas width and height 
-can.width = 600;
-can.height = 600;
+canvas.width = 600;
+canvas.height = 600;
 
+// PIXEL scale
+var WIDTHSCALE = 20;
+var HEIGHTSCALE = 20;
 
-var colScale = 20;
-var rowScale = 20;
-
-
-var WALLIMAGEPATH = "./wall.png";
+// new actual width and height
+var CANVASACTUALWIDTH = canvas.width / WIDTHSCALE;
+var CANVASACTUALHEIGHT = canvas.height / HEIGHTSCALE;
 
 var MAZECELLWIDTH = 20;
 var MAZECELLHEIGHT = 20;
 
-var CANVASACTUALWIDTH = can.width / colScale;
-var CANVASACTUALHEIGHT = can.height / rowScale;
+var CIRCLERADIUS = 0.5;
 
-var FPS = 30;
+var FPS = 7;
+var STEP = 4;
+// images paths
+var WALLIMAGEPATH = "./wall.png";
+
+
+
+// operations
+// scale the pixel size in the canvas 
+ctx.scale(WIDTHSCALE, HEIGHTSCALE);
+
+
+
+

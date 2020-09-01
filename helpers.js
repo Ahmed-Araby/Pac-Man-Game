@@ -9,14 +9,14 @@ function drawRectangle(upperLeftCol, upperLeftRow,
     return ;
 }
 
-function canvasMouseClick(event)
+function canvasMouseClickHandler(event)
 {
-    var col = parseInt(event.clientX / colScale);
-    var row = parseInt(event.clientY / rowScale);
+    var col = parseInt(event.clientX / WIDTHSCALE);
+    var row = parseInt(event.clientY / HEIGHTSCALE);
     
     colLabel.innerHTML = col;
     rowLabel.innerHTML = row;
-    
+
     return ;
 }
 

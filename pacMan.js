@@ -4,15 +4,9 @@ class pacMan
 {
     constructor(colCenter, rowCenter)
     {
-        /*
-        col and row 
-        are determined by the game controller 
-        as it's an empty cell from wall and food.
-        */
-
         this.colCenter = colCenter
         this.rowCenter = rowCenter;
-        this.circleRadius = 0.5;
+        this.circleRadius = CIRCLERADIUS;
         this.lastPressedKey = "";
         this.mothState = "close";
         return ;
@@ -41,15 +35,37 @@ class pacMan
         return maze[col][row];
     }
 
-    checkPosition(maze, dCol, dRow)
+    testMove(maze, dCol, dRow)
     {
-        if(this.colCenter + dCol >=0 &&
-            this.colCenter +  dCol <= CANVASACTUALWIDTH && 
-            this.rowCenter + dRow >=0 &&
-            this.rowCenter + dRow <= CANVASACTUALHEIGHT && 
-            this.getPixel(maze, this.colCenter + dCol, this.rowCenter + dRow)==1)
-            return true;
-        return false;
+        /*
+        if the next complete move 
+        will be for a cell with a wall or 
+        out of the maze boundary 
+
+        prevent the move, no need for actual circle, 
+        rectangele collision detection  
+        this simplicity comming from that the circle radius is half
+        of the square dimension , other wise we would do actual collision detection.
+        */
+       
+        var newColCenter = this.colCenter  + dCol;
+        var newRowCenter = this.rowCenter  + dRow;
+
+        var newCol = parseInt(this.colCenter  + dCol);
+        var newRow = parseInt(this.rowCenter  + dRow);
+
+        // out of the boundary
+        if(newColCenter < 0 || newCol >= CANVASACTUALWIDTH ||
+            newRowCenter < 0 || newRow >= CANVASACTUALHEIGHT)
+            return false;
+        // cell with a wall
+        if(maze[newCol][newRow] == 0)
+            return false;
+            
+        /*
+        confirm the move 
+        */
+        return true;
     }
 
         
@@ -85,7 +101,7 @@ class pacMan
 
     update(currentPressedKey, maze)
     {
-        
+        // * command 
         // game didn't start yet
         if(this.lastPressedKey =="" && currentPressedKey =="")
             return ;
@@ -107,25 +123,30 @@ class pacMan
         dCol = delteArray[0];
         dRow = delteArray[1];
 
-        if(this.checkPosition(maze, dCol, dRow) == true)
+        // * test move 
+        if(this.testMove(maze, dCol, dRow) == true)
         {
-            this.colCenter += dCol / 4;
-            this.rowCenter += dRow / 4;
+            // * apply the move
+            this.colCenter += dCol / 1;
+            this.rowCenter += dRow / 1;
             this.lastPressedKey = currentPressedKey;
         }
 
+        // * test move
         else if(currentPressedKey !=this.lastPressedKey)
         {
             /*
             use last pressed key
+
+            * apply the move
             */
            delteArray = this.getDelte(this.lastPressedKey);
            dCol = delteArray[0];
            dRow = delteArray[1];
-           if(this.checkPosition(maze, dCol, dRow) == true)
+           if(this.testMove(maze, dCol, dRow) == true)
            {
-                this.colCenter += dCol / 4;
-                this.rowCenter += dRow / 4;
+                this.colCenter += dCol / 1;
+                this.rowCenter += dRow / 1;
            }  
         }
         return ;

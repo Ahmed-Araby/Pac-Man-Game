@@ -11,12 +11,6 @@ class vector
 
 class mazeGenerator
 {
-    /*
-    the whole point of maze is to have 
-    path between the start positiona and the end 
-    position
-    */
-
     constructor(canvasWidth, canvasHeight
         , maxCoridersCount = 1, coriderPresentage = 0.2, wallImagePath = WALLIMAGEPATH)
     {
@@ -36,17 +30,13 @@ class mazeGenerator
 
         /*
         initialize the maze as full opened 
-        is very crusical
-
+        is very crusical, as we leave a col, row between consecutive walls
         in canvas manner 
         */
-
-        // row 
+ 
         for(var col=0; col<canvasWidth; col++)
         {
-            this.maze.push([]);
-            
-            // cols of a row 
+            this.maze.push([]); 
             for(var row=0; row<canvasHeight; row++)
                 this.maze[col].push(1);
         }
@@ -144,7 +134,7 @@ class mazeGenerator
     recursiveDivision(startPoint , endPoint,
          divisionDirection = 'vertical')
     {
-        // base case 
+        // base case, same col or row 
         if(startPoint.x+1 >= endPoint.x 
             || startPoint.y+1 >= endPoint.y)
         {
@@ -220,11 +210,12 @@ class mazeGenerator
             {
                 if(this.maze[col][row] == 1)
                 {
+                    // center of the circle
                     return Array(col + 0.5, row + 0.5);
                 }
             }
         }
-        return Array(-1, -1);
+        throw "there is not valid position for pacMan";
     }
 
     applySpecialChangeToTheMaze()

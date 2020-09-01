@@ -1,28 +1,17 @@
 "use strict";
 
-
-// scale the pixel size in the canvas 
-ctx.scale(colScale, rowScale);
-
-// new actual width and height
-var actWidth = can.width / colScale;
-var actHeight = can.height / rowScale;
-
-
-
 class manger
 {
     constructor()
     {
-        this.mazeObj = new mazeGenerator(actWidth, actHeight);
+        this.mazeObj = new mazeGenerator(CANVASACTUALWIDTH, CANVASACTUALHEIGHT);
         this.mazeObj.recursiveDivision(new vector(0, 0),
-                                  new vector(actWidth, actHeight),
+                                  new vector(CANVASACTUALWIDTH, CANVASACTUALHEIGHT),
                                   'vertical');
         
         var validPosition = this.mazeObj.pacManPosition();
         var colCenter = validPosition[0];
         var rowCenter = validPosition[1];
-        console.log(colCenter, rowCenter)
         this.pacMan = new pacMan(colCenter, rowCenter);
         this.currentPressedKey = "";
     }  
@@ -38,6 +27,8 @@ class manger
         // pacMan vs ghost 
         
         // pacMan vs food 
+
+        // pacMan vs walls 
 
     }
 
@@ -79,9 +70,8 @@ class manger
         var col = parseInt(colLabel.innerHTML);
         var row = parseInt(rowLabel.innerHTML);
         var message = "";
-
-        if(Boolean(col) == false || Boolean(row) == false){
-            message = "pick a white point";
+        if(isNaN(col) == true || isNaN(row) == true){
+            message = "Click on the canvas";
         }
         else 
             message = this.mazeObj.testMazeConnectivity(col, row);
@@ -122,9 +112,9 @@ document.onkeydown = function(e) {
             break;
     }
     mangerObj.setCurrentPressedKey(currentPressedKey);
-    console.log(currentPressedKey)
 }
-can.addEventListener('click', canvasMouseClick);
+
+canvas.addEventListener('click', canvasMouseClickHandler);
 
 
 
