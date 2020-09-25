@@ -1,9 +1,10 @@
+# my notes 
+https://docs.google.com/document/d/10_t7tTi0kw1wMdJt6ACkPNnMgv69hf-jyR-NsCZxVDM/edit
+
 # awsome repos
 https://github.com/StamateValentin/PacMan
 
 https://github.com/armin-reichert/pacman   (using state machine)
-
-
 
 # awsome blogs 
 https://dev.to/code2bits/pac-man-patterns--ghost-movement-strategy-pattern-1k1a
@@ -21,8 +22,22 @@ https://www.hindawi.com/journals/ijcgt/2011/920873/
 # offical description from wikipedia 
 https://en.wikipedia.org/wiki/Pac-Man?_ga=2.234304222.1914812600.1598495960-28338539.1598495960
 
-
-
+# maze 
+https://shaunlebron.github.io/pacman-mazegen/
+https://weblog.jamisbuck.org/2011/1/20/maze-generation-wilson-s-algorithm
+https://publications.waset.org/11300/recursive-path-finding-in-a-dynamic-maze-with-modified-tremauxs-algorithm
 
 # state machine in game programming and state design pattern
 https://gameprogrammingpatterns.com/state.html
+
+# collision detection
+http://www.jeffreythompson.org/collision-detection/table_of_contents.php
+http://www.jeffreythompson.org/collision-detection/circle-rect.php#:~:text=If%20the%20circle%20is%20to,check%20against%20the%20BOTTOM%20edge.
+http://www.jeffreythompson.org/collision-detection/object_oriented_collision.php
+
+# how to move like pacman 
+https://phaser.io/tutorials/coding-tips-005
+
+# random resources 
+https://engineering.purdue.edu/OOSD/F2008/assignment/assignment4.html
+
