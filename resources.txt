@@ -41,3 +41,6 @@ https://phaser.io/tutorials/coding-tips-005
 # random resources 
 https://engineering.purdue.edu/OOSD/F2008/assignment/assignment4.html
 
+
+
+https://www.quora.com/Why-is-Breadth-first-search-and-other-related-algorithms-considered-a-part-of-the-AI-field
